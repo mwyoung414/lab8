@@ -23,7 +23,39 @@ spec:
         volumeMounts:
         - name: app-deploy
           mountPath: /mnt/data
-        command: ["tail", "-f", "/dev/null"]
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        env:
+        - name: USER
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: db_password
+        - name: HOST
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: HOST
+        - name: DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: DATABASE
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-config
+              key: PORT
       volumes:
       - name: app-deploy
         persistentVolumeClaim:

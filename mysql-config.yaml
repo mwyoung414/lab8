@@ -1,0 +1,10 @@
+appVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+  namespace: default
+data:
+  DATABASE: TODO
+  USER: ROOT
+  HOST: mysql.default.svc.cluster.local
+  PORT: "3306"
