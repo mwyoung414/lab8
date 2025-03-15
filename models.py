@@ -1,15 +1,17 @@
-from sqlalchemy import String, Boolean
+from sqlalchemy import String, Boolean, DateTime
+from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped, mapped_column
-from db import Model
 
-class Todo(Model):
+Base = DeclarativeBase()
+
+class Todo(Base):
     __tablename__ = "TODO"
 
-    ID: Mapped[int] = mapped_column(primary_key=True)
+    ID: Mapped[int] = mapped_column(primary_key=True, unique=True, nullable=False)
     TITLE: Mapped[str] = mapped_column(String(255), nullable=False)
     DESCRIPTION: Mapped[str] = mapped_column(String(255), nullable=False)
-    DONE: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    DELETED: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    DONE: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    DELETED: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False, default=False)
 
     def __init__(self, id, title, description, done, deleted=False):
         self.id = id
@@ -20,3 +22,22 @@ class Todo(Model):
 
     def __repr__(self):
         return f"<Todo(id='{self.id}', title='{self.title}', description='{self.description}', done='{self.done}', deleted='{self.deleted}')>"
+    
+class User(Base):
+    __tablename__ = "USER"
+
+    ID: Mapped[int] = mapped_column(primary_key=True, unique=True, nullable=False)
+    USERNAME: Mapped[str] = mapped_column(String(255), nullable=False)
+    PASSWORD: Mapped[str] = mapped_column(String(255), nullable=False)
+    EMAIL: Mapped[str] = mapped_column(String(255), nullable=False)
+    CREATED_ON: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
+
+    def __init__(self, id, username, password, email, created_on):
+        self.id = id
+        self.username = username
+        self.password = password
+        self.email = email
+        self.created_on = created_on
+
+    def __repr__(self):
+        return f"<User(id='{self.id}', username='{self.username}', password='{self.password}', email='{self.email}', created_on='{self.created_on}')>"
