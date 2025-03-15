@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deploy
+  labels:
+    app: app-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-deploy
+  template:
+    metadata:
+      labels:
+        app: app-deploy
+    spec:
+      containers:
+      - name: lab8
+        image: python:3.10-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: app-deploy
+          mountPath: /mnt/data
+        command: ["tail", "-f", "/dev/null"]
+      volumes:
+      - name: app-deploy
+        persistentVolumeClaim:
+          claimName: app-deploy-pvc

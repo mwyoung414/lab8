@@ -1,0 +1,6 @@
+appVersion: v1
+kind: ConfigMap
+metadata:
+  name: lab8-config
+  namespace: default
+data:
