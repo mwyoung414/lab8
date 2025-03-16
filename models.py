@@ -1,8 +1,8 @@
-from sqlalchemy import String, Boolean, DateTime
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import String, Boolean, DateTime, Column, Integer
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Mapped, mapped_column
 
-Base = DeclarativeBase()
+Base = declarative_base()
 
 class Todo(Base):
     __tablename__ = "TODO"
@@ -11,7 +11,7 @@ class Todo(Base):
     TITLE: Mapped[str] = mapped_column(String(255), nullable=False)
     DESCRIPTION: Mapped[str] = mapped_column(String(255), nullable=False)
     DONE: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
-    DELETED: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False, default=False)
+    DELETED: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
     def __init__(self, id, title, description, done, deleted=False):
         self.id = id
@@ -26,7 +26,7 @@ class Todo(Base):
 class User(Base):
     __tablename__ = "USER"
 
-    ID: Mapped[int] = mapped_column(primary_key=True, unique=True, nullable=False)
+    ID = Column(Integer, primary_key=True, autoincrement=True)
     USERNAME: Mapped[str] = mapped_column(String(255), nullable=False)
     PASSWORD: Mapped[str] = mapped_column(String(255), nullable=False)
     EMAIL: Mapped[str] = mapped_column(String(255), nullable=False)
