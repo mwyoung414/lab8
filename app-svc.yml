@@ -1,0 +1,15 @@
+# filepath: /home/liquid/lab8/python-app-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-app
+  labels:
+    app: python-app
+spec:
+  type: NodePort
+  ports:
+    - port: 5000
+      targetPort: 5000
+      nodePort: 30000  # You can specify a port in the range 30000-32767 or let Kubernetes assign one
+  selector:
+    app: python-app

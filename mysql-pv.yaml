@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: sqlite-pv
+  name: mysql-pv
 spec:
   capacity:
     storage: 1Gi
@@ -10,7 +10,6 @@ spec:
     - ReadWriteOnce
   volumeMode: Filesystem
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: sqlite-db
   local:
     path: /var/lib/mysql
   nodeAffinity:
@@ -33,38 +32,3 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: mysql-db
----
-apiVersion: v1
-kind: deployment
-metadata:
-  name: mysql
-  labels: 
-    app: mysql
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: mysql
-  template:
-    metadata:
-      labels:
-        app: mysql
-    spec:
-      containers:
-      - name: mysql
-        image: mysql:lastest
-        imagePullPolicy: IfNotPresent
-        volumeMounts:
-        - name: mysql
-          mountPath: /var/lib/mysql
-        env:
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: lab8-secret
-              key: db_password
-      volumes:
-      - name: mysql
-        persistentVolumeClaim:
-          claimName: mysql-pvc

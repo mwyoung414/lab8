@@ -1,10 +1,13 @@
-appVersion: v1
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mysql-config
   namespace: default
 data:
   DATABASE: TODO
-  USER: ROOT
-  HOST: mysql.default.svc.cluster.local
+  USER: root
+  HOST:  127.0.0.1
   PORT: "3306"
+  SSL_CA: /etc/mysql-ssl/ca.pem
+  SSL_CERT: /etc/mysql-ssl/client-cert.pem
+  SSL_KEY: /etc/mysql-ssl/client-key.pem

@@ -1,4 +1,7 @@
 flask
 SQLAlchemy
 flask-sqlalchemy
-pymsql
+PyMySQL
+cryptography
+uWSGI
+mysql-connector-python

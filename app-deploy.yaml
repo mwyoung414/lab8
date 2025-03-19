@@ -3,26 +3,23 @@ kind: Deployment
 metadata:
   name: app-deploy
   labels:
-    app: app-deploy
+    app: app
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: app-deploy
+      app: app
   template:
     metadata:
       labels:
-        app: app-deploy
+        app: app
     spec:
       containers:
       - name: lab8
-        image: python:3.10-alpine
-        imagePullPolicy: IfNotPresent
+        image: lab8:1.0.0
+        imagePullPolicy: Never
         ports:
         - containerPort: 5000
-        volumeMounts:
-        - name: app-deploy
-          mountPath: /mnt/data
         resources:
           limits:
             memory: "512Mi"
@@ -56,7 +53,16 @@ spec:
             configMapKeyRef:
               name: mysql-config
               key: PORT
-      volumes:
-      - name: app-deploy
-        persistentVolumeClaim:
-          claimName: app-deploy-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  selector:
+    app: app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
